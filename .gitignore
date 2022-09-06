@@ -1,4 +1,5 @@
 !/*.py
 !/README.md
 !/req.txt
+/__pycache__
 /img/*
