@@ -6,15 +6,20 @@ Xmeans法を利用した自動画像分類プログラムです。
 深層学習との連携や各種特徴量を指定できます。  
 
 ## 準備
+
 本プログラムはPythonですので実行環境が必要です。  
+
 1. このgitをクローンする
 2. クローンしたフォルダ内で`pip install -r req.txt`で依存モジュールをインストールする。(初回のみ)
 3. 深層学習との連携機能を使用する場合`Pytorch` `timm`も導入する。[pytorch.org](https://pytorch.org/)
 
 ## 使い方
+
 このプログラムはコマンド上で動作します。
-対応する画像は、PNG,JPEG,BMP形式です。  
-```
+対応する画像は、PNG,JPEG,BMP形式です。
+
+```Shell
+
 optional arguments:
   -h, --help            show this help message and exit
   -f FOLDER, --folder FOLDER
@@ -33,7 +38,8 @@ optional arguments:
 `python .\main_class.py -h` にも同様の説明があります。
 
 ## 特徴量
-現在10種類の特徴量を選ぶことができます。分類するデータによっていろいろ試してみてください。 
+
+現在10種類の特徴量を選ぶことができます。分類するデータによっていろいろ試してみてください。  
 | キー | 説明|備考|
 | --- | --- | --- |
 | all_BGR | BGR色空間のうち全チャンネルを使う |大まかに分類|
@@ -48,6 +54,7 @@ optional arguments:
 | ML_hog | HOG特徴量を使う|構造を重視した分類(ベクトル要素あり)|
 
 ## シルエット分析
-シルエット分析法による分類の可視化とデータの散布図を出力できます。  
-計算時間はかかりますが、クラスタリングの指標になります。
 
+シルエット分析法による分類の可視化とデータの散布図を出力できます。  
+計算時間はかかりますが、クラスタリングの指標になります。  
+![シルエット](https://github.com/estelf/grouping_images/blob/main/img/CLR_UV_YUV_10.png)
