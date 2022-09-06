@@ -1,0 +1,8 @@
+Pillow
+matplotlib
+opencv-python
+scikit-image
+numpy
+tqdm
+umap-learn
+pyclustering
