@@ -1,5 +1,8 @@
 !/*.py
 !/README.md
 !/req.txt
-/__pycache__
+/main_class.build/*
+/main_class.dist/*
+/__pycache__/*
+/.venv/*
 /img/*
