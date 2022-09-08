@@ -1,15 +1,12 @@
 import argparse
-import glob
 import re
 import time
-import os
-import cv2
-import numpy as np
+
 import umap
 from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
 from pyclustering.cluster.xmeans import xmeans
 
-import file_operation
+import file_operation as fo
 import get_Feature
 import Partitive_clustering_util
 
@@ -20,80 +17,6 @@ def Feature_list():
     """
     with open("get_Feature.py", "r", encoding="utf-8") as f:
         return list(re.findall(r"(?<=def ).*(?=\()", f.read()))
-
-def my_imread(filename):
-    """
-    opencv 日本語パス対応
-    """
-    try:
-        n = np.fromfile(filename, np.uint8)
-        img = cv2.imdecode(n, cv2.IMREAD_COLOR)
-        return img
-    except Exception as e:
-        print(e)
-        raise Exception(filename+" is faild")
-
-def resize_img(img):
-    """
-    画像をpaddingしながら128x128にする
-    """
-    height, width, _ = img.shape  # 画像の縦横サイズを取得
-    diffsize = abs(height - width)
-    padding_half = int(diffsize / 2)
-
-  # 縦長画像→幅を拡張する
-    if height > width:
-        padding_img = cv2.copyMakeBorder(
-            img, 0, 0, padding_half, height-(width+padding_half), cv2.BORDER_CONSTANT, (0, 0, 0))
-  # 横長画像→高さを拡張する
-    elif width > height:
-        padding_img = cv2.copyMakeBorder(
-            img, padding_half, width-(height+padding_half), 0, 0, cv2.BORDER_CONSTANT, (0, 0, 0))
-    else:
-        padding_img=img
-    return cv2.resize(padding_img, (128, 128))
-
-
-class folder_to_dataset:
-    """
-    配列アクセスに応じて画像を読み込む
-    一部numpyの機能も実装する
-    """
-
-    def __init__(self, folder, get_Feature_method) -> None:
-        re1 = re.compile(r"png|jpe?g|bmp", re.I)
-
-        self.file_list = [i for i in glob.glob(f"{folder}{os.sep}*.*") if re.search(re1, i)]
-
-        reshape_img = get_Feature_method(my_imread(self.file_list[0]))
-        self.shape = len(self.file_list), reshape_img.shape[0]
-        self.get_Feature_method = get_Feature_method
-        self.dispvbar = True
-
-    def __len__(self):
-        return len(self.file_list)
-
-    def __getitem__(self, idx):
-
-        if type(idx) is np.ndarray:
-
-            reshape_img = []
-            for i in idx:
-                reshape_img.append(self.get_Feature_method(
-                    resize_img(my_imread(self.file_list[i]))))
-        else:
-            # データ読み出し時のアニメーションtqdm風味
-            if self.dispvbar:
-                bbar = "╪"*(int(idx*50/self.shape[0])-1)+"━"
-                wbar = " "*(50-len(bbar))
-                print(
-                    f"File Access| {idx/self.shape[0]:.3%} |\033[36m{bbar}{wbar}\033[0m| {idx}/{self.shape[0]}", end="\r",flush=True)
-
-            reshape_img = self.get_Feature_method(
-                resize_img(my_imread(self.file_list[idx])))
-
-        return reshape_img
-
 
 # ----コマンドパーサー----
 parser = argparse.ArgumentParser(
@@ -121,8 +44,10 @@ args = parser.parse_args()
 start = time.perf_counter()  # タイマー開始
 DR_flag = args.dimension_reduction  # 次元圧縮フラグ#---*
 folder = args.folder
+#破損データのチェック
+fo.data_check(folder)
 
-sample_base = folder_to_dataset(
+sample_base = fo.folder_to_dataset(
     folder, (Feature_method := eval(f"get_Feature.{args.Feature}")))  # ---*
 if DR_flag:
     mapper = umap.UMAP(n_components=DR_flag, random_state=0)
@@ -130,6 +55,7 @@ if DR_flag:
     print("\n",flush=True)
 else:
     sample = sample_base
+
 
 
 print(
@@ -145,7 +71,7 @@ print(
     f"| 次元削除　　　\t: {DR_flag}{abrank*(len(Feature_method.__name__)-len(str(DR_flag)))}\t|",flush=True)
 
 if args.max_clusters == -1:
-    clusters=sample.shape[0]//10
+    clusters=sample.shape[0]
     print(f"| 最大クラスタ　\t: 自動{abrank*(len(Feature_method.__name__)-2)}\t|",flush=True)
 else:
     clusters=args.max_clusters
@@ -197,8 +123,8 @@ if args.logging:
 
 # ----ファイル移動----
 if args.move:
-    file_operation.move(folder, sample_base.file_list, labels)  # ---*
+    fo.move(folder, sample_base.file_list, labels)  # ---*
 else:
-    file_operation.copy(folder, sample_base.file_list, labels)  # ---*
+    fo.copy(folder, sample_base.file_list, labels)  # ---*
 
 print("総実行時間 :", time.perf_counter() - start)
