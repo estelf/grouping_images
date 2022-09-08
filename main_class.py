@@ -1,7 +1,7 @@
 import argparse
 import re
 import time
-
+import warnings
 import umap
 from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
 from pyclustering.cluster.xmeans import xmeans
@@ -10,6 +10,7 @@ import file_operation as fo
 import get_Feature
 import Partitive_clustering_util
 
+warnings.simplefilter('ignore')
 
 def Feature_list():
     """
