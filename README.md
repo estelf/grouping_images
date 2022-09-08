@@ -31,7 +31,7 @@ optional arguments:
   -c MAX_CLUSTERS, --max_clusters MAX_CLUSTERS
                         最大クラスタ数。自動が細かすぎる場合値を小さくすると良いです。デフォルト : -1(自動)
   -a, --analyze         シルエット分析による分析結果を出します。処理が重くなります。
-  -m, --move            移動の替わりにコピーにする。
+  -m, --move            コピーの代わりに移動にする。
   -log, --logging       転送ログを保存する
 ```  
   

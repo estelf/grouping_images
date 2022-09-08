@@ -35,7 +35,7 @@ parser.add_argument('-c', '--max_clusters', help='最大クラスタ数。自動
 parser.add_argument('-a', '--analyze', default=False,
                     help='シルエット分析による分析結果を出します。処理が重くなります。', action='store_true')   # よく使う引数なら省略形があると使う時に便利
 parser.add_argument("-m", "--move", action="store_true",
-                    default=False,  help="移動の替わりにコピーにする。")
+                    default=False,  help="コピーの代わりに移動にする。")
 parser.add_argument("-log", "--logging", action="store_true",
                     default=False,  help="転送ログを保存する")
 args = parser.parse_args()
