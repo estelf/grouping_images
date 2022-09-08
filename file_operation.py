@@ -87,7 +87,7 @@ def data_check(folder):
     cont=count_number()
 
     re1 = re.compile(r"png|jpe?g|bmp", re.I)
-    for i in [i for i in glob.glob(f"{folder}{os.sep}*.*") if re.search(re1, i)]:
+    for i in tqdm.tqdm([i for i in glob.glob(f"{folder}{os.sep}*.*") if re.search(re1, i)], ascii=" ▖▌▛█", colour="CYAN", desc="画像エラーチェック"):
         if my_imread(i) is None:
             cont.step()
             os.makedirs(f"{folder}{os.sep}error_file",exist_ok=True)
