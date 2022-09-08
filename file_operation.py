@@ -81,7 +81,7 @@ def my_imread(filename):
         return img
     except Exception as e:
         print(e)
-        raise Exception(filename+" is faild")
+        return None
 
 def data_check(folder):
     cont=count_number()
