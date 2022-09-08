@@ -90,7 +90,7 @@ def data_check(folder):
     for i in [i for i in glob.glob(f"{folder}{os.sep}*.*") if re.search(re1, i)]:
         if my_imread(i) is None:
             cont.step()
-            os.makedirs(f"{folder}{os.sep}error_file")
+            os.makedirs(f"{folder}{os.sep}error_file",exist_ok=True)
             shutil.move(i,f"{folder}{os.sep}error_file")
     if cont.show()!=0:
         print(f"{cont.show()}個のエラー画像があります。これらのファイルは除外されます。")
