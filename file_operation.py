@@ -129,4 +129,4 @@ def resize_img(img):
         )
     else:
         padding_img = img
-    return cv2.resize(padding_img, (128, 128))
+    return cv2.resize(padding_img, (64, 64))

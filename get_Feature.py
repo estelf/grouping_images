@@ -75,3 +75,7 @@ def ML_hog(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     fd, hog_image = hog(img, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True)
     return hog_image.reshape(1, -1)[0]
+
+
+def load():
+    pass

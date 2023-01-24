@@ -11,6 +11,7 @@ import get_Feature
 import Partitive_clustering_util
 
 warnings.simplefilter("ignore")
+get_Feature.load()
 
 
 def Feature_list():
@@ -53,7 +54,7 @@ start = time.perf_counter()  # タイマー開始
 DR_flag = args.dimension_reduction  # 次元圧縮フラグ#---*
 folder = args.folder
 # 破損データのチェック
-fo.data_check(folder)
+# fo.data_check(folder)
 
 sample_base = fo.folder_to_dataset(folder, (Feature_method := eval(f"get_Feature.{args.Feature}")))  # ---*
 if DR_flag:
