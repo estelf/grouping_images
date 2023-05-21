@@ -77,8 +77,8 @@ def ML_hog(img):
     return hog_image.reshape(1, -1)[0]
 
 
-def Phash(img):
-    hash_func = cv2.img_hash.PHash_create()
+def H_ColorMomentHash(img):
+    hash_func = cv2.img_hash.ColorMomentHash_create()
     tem = hash_func.compute(img)[0]
     return tem
 

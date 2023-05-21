@@ -2,7 +2,8 @@ import argparse
 import re
 import time
 import warnings
-import umap
+
+# import umap
 from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
 from pyclustering.cluster.xmeans import xmeans
 
@@ -33,7 +34,7 @@ parser.add_argument(
 parser.add_argument(
     "-dr",
     "--dimension_reduction",
-    help="次元削除を行い処理を高速化します。 小さい数値ほど高速になりますが意図しない結果になる場合もあります。 0で無効 デフォルト : 64",
+    help="調整中です。値の指定なし。 0で無効 デフォルト : 64",
     default=64,
     type=int,
 )  # よく使う引数なら省略形があると使う時に便利
@@ -58,9 +59,10 @@ folder = args.folder
 
 sample_base = fo.folder_to_dataset(folder, (Feature_method := eval(f"get_Feature.{args.Feature}")))  # ---*
 if DR_flag:
-    mapper = umap.UMAP(n_components=DR_flag, random_state=0)
-    sample = mapper.fit_transform(sample_base)
-    print("\n", flush=True)
+    # mapper = umap.UMAP(n_components=DR_flag, random_state=0)
+    # sample = mapper.fit_transform(sample_base)
+    # print("\n", flush=True)
+    sample = sample_base
 else:
     sample = sample_base
 
@@ -74,7 +76,7 @@ print(
 print(
     f"| データサイズ　\t: {sample.shape[1]}{abrank*(len(Feature_method.__name__)-len(str(sample.shape[1])))}\t|", flush=True
 )
-print(f"| 次元削除　　　\t: {DR_flag}{abrank*(len(Feature_method.__name__)-len(str(DR_flag)))}\t|", flush=True)
+# print(f"| 次元削除　　　\t: {DR_flag}{abrank*(len(Feature_method.__name__)-len(str(DR_flag)))}\t|", flush=True)
 
 if args.max_clusters == -1:
     clusters = sample.shape[0]
