@@ -31,9 +31,7 @@ class folder_to_dataset:
         return len(self.file_list)
 
     def __getitem__(self, idx):
-
         if type(idx) is np.ndarray:
-
             reshape_img = []
             for i in idx:
                 reshape_img.append(self.get_Feature_method(resize_img(my_imread(self.file_list[i]))))
@@ -129,4 +127,4 @@ def resize_img(img):
         )
     else:
         padding_img = img
-    return cv2.resize(padding_img, (64, 64))
+    return cv2.resize(padding_img, (128, 128))

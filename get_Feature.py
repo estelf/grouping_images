@@ -77,5 +77,11 @@ def ML_hog(img):
     return hog_image.reshape(1, -1)[0]
 
 
+def Phash(img):
+    hash_func = cv2.img_hash.PHash_create()
+    tem = hash_func.compute(img)[0]
+    return tem
+
+
 def load():
     pass
